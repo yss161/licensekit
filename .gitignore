@@ -1,0 +1,17 @@
+# 密钥库（含所有项目私钥，绝对不能提交）
+license_projects.json
+license_projects.json.tmp
+
+# 授权文件
+*.key
+
+# 生成产物
+out/
+*.pyc
+__pycache__/
+*.egg-info/
+
+# 编辑器
+.vscode/
+.idea/
+.DS_Store

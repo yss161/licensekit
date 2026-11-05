@@ -1,0 +1,56 @@
+文本体检工具 · 授权演示
+
+这是一个可运行的小程序，用于演示 LicenseKit 如何接入实际项目。
+
+运行：
+
+    python app.py
+
+首次启动会进入激活页。要重新体验激活流程：
+
+    python app.py --reset
+
+其他调试命令：
+
+    python app.py --status     查看授权状态
+    python app.py --machine    只显示本机机器码
+
+【激活页会显示什么】
+
+未激活时显示本机机器码，并要求输入密钥，最多尝试 3 次。
+输错时会指出具体原因：
+
+    密钥长度不对      当前多少字符、需要多少字符
+    旧版 v1 格式      24 字符的旧格式，本程序用 v4
+    不是本程序签发    签名对不上，多半是拿错了别的程序的密钥
+    已过期            显示过期日期
+    绑定了另一台电脑  列出本机机器码
+    已被作废          提示联系作者
+    含非法字符        密钥只允许 A-Z 和 2-7
+
+【测试密钥】
+
+同目录的 测试密钥.txt 提供 6 枚现成密钥，覆盖上述各种情况。
+直接复制粘贴即可看到对应反馈。
+
+【文件说明】
+
+    app.py          演示主程序
+    licensing.py    授权模块，只含公钥
+    ed25519.py      签名实现
+
+授权文件 license.key 生成在本目录，删除即取消激活。
+
+【接入自己的项目】
+
+1. 把 licensing.py 和 ed25519.py 复制到你的程序目录
+2. 在入口添加：
+
+       import licensing
+       licensing.require()
+
+需要自定义提示时用：
+
+       ok, message, info = licensing.current_status()
+       if not ok:
+           print(message, licensing.machine_code())
